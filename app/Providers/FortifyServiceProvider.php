@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\RegisterResponse;
 use Laravel\Fortify\Fortify;
 
 class FortifyServiceProvider extends ServiceProvider
@@ -20,7 +21,18 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // The class implements the RegisterResponse interface.
+        // The toResponse method is called when the user is successfully registered.
+        // The method returns a redirect to the subscribe.plans route.
+        $this->app->instance(RegisterResponse::class, new class implements RegisterResponse {
+            /**
+             * Redirect the user to the subscribe.plans route after registration.
+             */
+            public function toResponse($request): \Illuminate\Http\RedirectResponse
+            {
+                return redirect()->route('subscribe.plans');
+            }
+        });
     }
 
     /**
