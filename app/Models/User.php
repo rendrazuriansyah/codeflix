@@ -45,4 +45,27 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get all of the user's memberships.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany<\App\Models\Membership>
+     */
+    public function memberships()
+    {
+        return $this->hasMany(Membership::class);
+    }
+
+    /**
+     * Check if the user has an active membership plan.
+     *
+     * @return bool True if the user has an active membership plan, false otherwise.
+     */
+    public function hasMembershipPlan()
+    {
+        return $this->memberships()
+            ->where('active', '=', true)
+            ->where('end_date', '>', now())
+            ->exists();
+    }
 }

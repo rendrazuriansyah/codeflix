@@ -2,17 +2,19 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Laravel\Fortify\Fortify;
+use Illuminate\Support\Facades\Auth;
 use App\Actions\Fortify\CreateNewUser;
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
-use App\Actions\Fortify\UpdateUserProfileInformation;
-use Illuminate\Cache\RateLimiting\Limit;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\LoginResponse;
 use Laravel\Fortify\Contracts\RegisterResponse;
-use Laravel\Fortify\Fortify;
+use App\Actions\Fortify\UpdateUserProfileInformation;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,28 @@ class FortifyServiceProvider extends ServiceProvider
              */
             public function toResponse($request): \Illuminate\Http\RedirectResponse
             {
+                return redirect()->route('subscribe.plans');
+            }
+        });
+
+        // The class implements the LoginResponse interface.
+        // The toResponse method is called after the user is successfully logged in.
+        // The method returns a redirect to the home route if the user has an active
+        // membership plan, otherwise it redirects to the subscribe.plans route.
+        $this->app->instance(LoginResponse::class, new class implements LoginResponse {
+            /**
+             * Redirect the user to the home or subscribe.plans route after login.
+             */
+            public function toResponse($request): \Illuminate\Http\RedirectResponse
+            {
+                // Redirect the user to the home route if they have an active membership plan.
+                // Otherwise redirect to the subscribe.plans route.
+                if (Auth::user()->hasMembershipPlan()) {
+                    return redirect()->intended(config('fortify.home'));
+                }
+
+                // Redirect the user to the subscribe.plans route if they don't have an active
+                // membership plan.
                 return redirect()->route('subscribe.plans');
             }
         });

@@ -14,6 +14,17 @@ class Membership extends Model
         'active',
     ];
 
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+        'active' => 'boolean',
+    ];
+
     public function plan() 
     {
         return $this->belongsTo(Plan::class);
