@@ -54,7 +54,7 @@
             </div>
 
             {{-- Form to submit the payment --}}
-            <form action="#" method="POST">
+            <form action="{{ route('subscribe.process') }}" method="POST">
                 @csrf
                 <input type="hidden" name="plan_id" value="{{ $plan->id }}">
                 <input type="hidden" name="total_payment" value="{{ $plan->price * 0.12 }}">
