@@ -56,6 +56,11 @@ class User extends Authenticatable
         return $this->hasMany(Membership::class);
     }
 
+    public function devices()
+    {
+        return $this->hasMany(UserDevice::class);
+    }
+
     /**
      * Check if the user has an active membership plan.
      *
