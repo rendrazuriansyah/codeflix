@@ -73,4 +73,20 @@ class User extends Authenticatable
             ->where('end_date', '>', now())
             ->exists();
     }
+
+    public function getCurrentPlan()
+    {
+        $activeMembership = $this->memberships()
+            ->where('active', '=', true)
+            ->where('start_date', '<=', now())
+            ->where('end_date', '>=', now())
+            ->latest()
+            ->first();
+
+        if (!$activeMembership) {
+            return null;
+        }
+
+        return Plan::find($activeMembership->plan_id);
+    }
 }
