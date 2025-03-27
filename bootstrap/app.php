@@ -11,7 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Alias the 'check.device.limit' middleware to the CheckDeviceLimit class
+        $middleware->alias([
+            'check.device.limit' => \App\Http\Middleware\CheckDeviceLimit::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -7,8 +7,17 @@ use App\Models\UserDevice;
 use Illuminate\Support\Str;
 use Jenssegers\Agent\Facades\Agent;
 
+/**
+ * Service class to manage user devices.
+ */
 class DeviceLimitService
 {
+    /**
+     * Registers a new device for a user.
+     *
+     * @param  \App\Models\User  $user
+     * @return \App\Models\UserDevice|false
+     */
     public function registerDevice(User $user)
     {
         $deviceInfo = $this->getDeviceInfo();
@@ -32,6 +41,11 @@ class DeviceLimitService
         return $device;
     }
 
+    /**
+     * Gets the device information from the request.
+     *
+     * @return array
+     */
     private function getDeviceInfo()
     {
         return [
@@ -44,12 +58,24 @@ class DeviceLimitService
         ];
     }
 
+    /**
+     * Generates a device name based on the platform and browser.
+     *
+     * @return string
+     */
     private function generateDeviceName()
     {
         return ucfirst(Agent::platform()) . ' ' . ucfirst(Agent::browser());
     }
 
-    private function findExistingDevice($user, $deviceInfo)
+    /**
+     * Finds an existing device for the user that matches the given device info.
+     *
+     * @param  \App\Models\User  $user
+     * @param  array  $deviceInfo
+     * @return \App\Models\UserDevice|null
+     */
+    private function findExistingDevice(User $user, array $deviceInfo)
     {
         return UserDevice::where('user_id', $user->id)
             ->where('device_type', $deviceInfo['device_type'])
@@ -58,12 +84,25 @@ class DeviceLimitService
             ->first();
     }
 
+    /**
+     * Checks if the user has reached the maximum device limit.
+     *
+     * @param  \App\Models\User  $user
+     * @return bool
+     */
     private function hasReachedDeviceLimit(User $user)
     {
         $maxDevices = $user->getCurrentPlan()->max_devices ?? 1;
         return UserDevice::where('user_id', $user->id)->count() >= $maxDevices;
     }
 
+    /**
+     * Creates a new device for the user.
+     *
+     * @param  \App\Models\User  $user
+     * @param  array  $deviceInfo
+     * @return \App\Models\UserDevice
+     */
     private function createNewDevice(User $user, array $deviceInfo)
     {
         return UserDevice::create([
@@ -79,8 +118,14 @@ class DeviceLimitService
         ]);
     }
 
+    /**
+     * Generates a random device ID.
+     *
+     * @return string
+     */
     private function generateDeviceId()
     {
         return Str::random(32);
     }
 }
+
