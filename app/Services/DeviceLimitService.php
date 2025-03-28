@@ -36,9 +36,20 @@ class DeviceLimitService
 
         $device = $this->createNewDevice($user, $deviceInfo);
         
-        session(['device_id' => $device->id]);
+        session(['device_id' => $device->device_id]);
 
         return $device;
+    }
+
+    /**
+     * Log out a device for a user.
+     *
+     * @param string $deviceId The device ID to log out.
+     */
+    public function logoutDevice($deviceId)
+    {
+        UserDevice::where('device_id', '=', $deviceId)->delete();
+        session()->forget('device_id');
     }
 
     /**
@@ -128,4 +139,5 @@ class DeviceLimitService
         return Str::random(32);
     }
 }
+
 

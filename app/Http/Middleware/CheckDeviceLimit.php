@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * Check if the user has reached the maximum device limit.
+ * Middleware to check if the user has reached the maximum device limit.
  *
  * If the user has reached the maximum device limit, log them out and
  * redirect them to the login page with an error message.
@@ -32,25 +32,28 @@ class CheckDeviceLimit
      */
     public function __construct(DeviceLimitService $deviceService)
     {
+        // Initialize the device service
         $this->deviceService = $deviceService;
     }
 
     /**
      * Handle an incoming request.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // If the user is not authenticated, skip the check
+        // Retrieve the authenticated user
         $user = Auth::user();
 
+        // If the user is not authenticated, skip the device limit check
         if (!$user) {
             return $next($request);
         }
 
-        // Skip the check for the login and logout routes
+        // Skip the device limit check for the login and logout routes
         if ($request->routeIs('login') || $request->routeIs('logout')) {
             return $next($request);
         }
@@ -58,16 +61,17 @@ class CheckDeviceLimit
         // Get the device ID from the session
         $sessionDeviceId = session('device_id');
 
-        // Check if the device exists in the database
+        // Check if the device exists in the database for the authenticated user
         $device = UserDevice::where('user_id', $user->id)
             ->where('device_id', $sessionDeviceId)
             ->first();
 
-        // If the device does not exist, register a new one
+        // If the device does not exist, attempt to register a new device
         if (!$device) {
-            $device = $this->deviceService->registerDevice($user);
+            $device = $this->deviceService->registerDevice(Auth::user()->getModel());
 
-            // If the registration fails, log the user out and redirect to the login page
+            // If device registration fails, log the user out
+            // and redirect them to the login page with an error message
             if (!$device) {
                 Auth::logout();
                 return redirect()->route('login')
@@ -75,7 +79,7 @@ class CheckDeviceLimit
             }
         }
 
-        // Continue with the request
+        // Continue with the next request handler
         return $next($request);
     }
 }

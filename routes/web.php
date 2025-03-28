@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SubscribeController;
 
@@ -10,6 +11,10 @@ Route::get('/', function () {
 Route::get('/home', function() {
     return view('home');
 })->middleware(['auth', 'check.device.limit'])->name('home');
+
+Route::post('/logout', function (Request $request) {
+    return app(\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class)->destroy($request);
+})->name('logout')->middleware(['auth', 'logoutDevice']);
 
 Route::get('/subscribe/plans', [SubscribeController::class, 'showPlans'])->name('subscribe.plans');
 Route::get('/subscribe/plan/{plan}', [SubscribeController::class, 'checkoutPlan'])->name('subscribe.checkout');
