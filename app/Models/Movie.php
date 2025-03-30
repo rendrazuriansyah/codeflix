@@ -35,6 +35,12 @@ class Movie extends Model
         return $this->hasMany(Rating::class);
     }
 
+    /**
+     * Accessor untuk atribut 'average_rating'.
+     * Menghitung rata-rata rating dari semua rating yang terkait dengan movie ini.
+     *
+     * @return float
+     */
     public function getAverageRatingAttribute()
     {
         return $this->ratings()->avg('rating');

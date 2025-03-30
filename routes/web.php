@@ -1,16 +1,15 @@
 <?php
 
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\SubscribeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SubscribeController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home', function() {
-    return view('movies.index');
-})->middleware(['auth', 'check.device.limit'])->name('home');
+Route::get('/home', [MovieController::class, 'index'])->name('home');
 
 Route::post('/logout', function (Request $request) {
     return app(\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class)->destroy($request);

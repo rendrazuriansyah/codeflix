@@ -43,78 +43,20 @@
         <div class="swiper">
             <!-- Wrapper for Slides -->
             <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 1 -->
-                        <img src="assets/img/Trex.png" class="img-fluid h-100" alt="Trex Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
+                <!-- Slides -->
+                @foreach ($newAddedMovies as $movie)
+                    <div class="swiper-slide">
+                        <div class="card">
+                            <!-- Image for Slides -->
+                            <img src="{{ $movie->poster }}" class="img-fluid h-100" alt="Trex Image">
+                            <!-- Rating Badge -->
+                            <span class="badge rounded-pill text-bg-dark badge-rating">
+                                <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
+                                ({{ $movie->average_rating }})
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <!-- Slide 2 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 2 -->
-                        <img src="assets/img/Foundation.png" class="img-fluid h-100" alt="Foundation Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 3 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 3 -->
-                        <img src="assets/img/Godzilla Kingkong.png" class="img-fluid h-100" alt="Godzilla Kingkong Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 4 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 4 -->
-                        <img src="assets/img/Lowlifes.png" class="img-fluid h-100" alt="Lowlifes Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 5 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 5 -->
-                        <img src="assets/img/Boy.png" class="img-fluid h-100" alt="Boy Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 6 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 6 -->
-                        <img src="assets/img/Fights.png" class="img-fluid h-100" alt="Fights Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Pagination Controls -->
             <div class="swiper-pagination"></div>
@@ -131,7 +73,7 @@
     <!-- Section title -->
     <h3 class="new-added-title">
         <!-- Text -->
-        Trending
+        Top Rated
     </h3>
     
     <section>
@@ -139,78 +81,20 @@
         <div class="swiper">
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
-                <!-- Slide 1 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 1 -->
-                        <img src="assets/img/Trex.png" class="img-fluid h-100" alt="Trex Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
+                <!-- Slides -->
+                @foreach ($topRatedMovies as $movie)
+                    <div class="swiper-slide">
+                        <div class="card">
+                            <!-- Image for Slides -->
+                            <img src="{{ $movie->poster }}" class="img-fluid h-100" alt="Trex Image">
+                            <!-- Rating Badge -->
+                            <span class="badge rounded-pill text-bg-dark badge-rating">
+                                <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
+                                ({{ $movie->average_rating }})
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <!-- Slide 2 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 2 -->
-                        <img src="assets/img/Foundation.png" class="img-fluid h-100" alt="Foundation Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 3 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 3 -->
-                        <img src="assets/img/Godzilla Kingkong.png" class="img-fluid h-100" alt="Godzilla Kingkong Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 4 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 4 -->
-                        <img src="assets/img/Lowlifes.png" class="img-fluid h-100" alt="Lowlifes Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 5 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 5 -->
-                        <img src="assets/img/Boy.png" class="img-fluid h-100" alt="Boy Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
-                <!-- Slide 6 -->
-                <div class="swiper-slide">
-                    <div class="card">
-                        <!-- Image for Slide 6 -->
-                        <img src="assets/img/Fights.png" class="img-fluid h-100" alt="Fights Image">
-                        <!-- Rating Badge -->
-                        <span class="badge rounded-pill text-bg-dark badge-rating">
-                            <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                            (8,3)
-                        </span>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Pagination Controls -->
             <div class="swiper-pagination"></div>
