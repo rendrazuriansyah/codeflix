@@ -29,4 +29,14 @@ class Movie extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function ratings()
+    {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function getAverageRatingAttribute()
+    {
+        return $this->ratings()->avg('rating');
+    }
 }
