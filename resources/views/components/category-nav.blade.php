@@ -1,19 +1,25 @@
 <ul class="mb-2 navbar-nav me-auto mb-lg-0">
     <!-- Dropdown for categories -->
-    <li class="nav-item dropdown category-dropdown">
+    <li class="nav-item dropdown kategori-dropdown">
         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Category <!-- Category label -->
         </a>
         <div class="dropdown-menu">
-            <ul>
-                <!-- Example category item -->
-                <li>
-                    <a class="dropdown-item" href="#">
-                        Action <!-- Category name -->
-                    </a>
-                </li>
-            </ul>
+            <!-- Loop through the list of categories, split into chunks -->
+            @foreach ($categories as $chunk)
+                <ul>
+                    <!-- Loop through each category in the chunk -->
+                    @foreach ($chunk as $category)
+                        <!-- category item -->
+                        <li>
+                            <!-- Create a link to the category page -->
+                            <a class="dropdown-item" href="#">
+                                {{ $category->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            @endforeach
         </div>
     </li>
 </ul>
-
