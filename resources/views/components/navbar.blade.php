@@ -18,9 +18,16 @@
             <x-category-nav />
 
             <!-- Search form -->
-            <form class="d-flex me-md-5" role="search">
-                <input class="form-control search-box" type="search" placeholder="Search here" aria-label="Search">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <form class="d-flex me-md-5" role="search" method="GET" action="{{ route('movies.search') }}">
+                <input 
+                    class="form-control search-box" 
+                    type="search" 
+                    name="q" 
+                    value="{{ request('q') }}"
+                    placeholder="Search here" 
+                    aria-label="Search" 
+                >
+                <i class="fa-solid fa-magnifying-glass search-icon" onclick="this.closest('form').submit();" style="cursor: pointer;"></i>
             </form>
 
             <!-- Navbar icons (notifications and user profile) -->
