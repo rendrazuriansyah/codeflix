@@ -29,7 +29,7 @@
                 <!-- Movie categories -->
                 <div class="badge-category">
                     @foreach ($movie->categories as $category)
-                        <span class="badge rounded-pill badge-category-movie">{{ $category->name }}</span>
+                        <a href="{{ route('categories.show', $category->slug) }}" class="badge rounded-pill badge-category-movie">{{ $category->name }}</a>
                     @endforeach
                 </div>
             </div>

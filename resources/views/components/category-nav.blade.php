@@ -13,7 +13,7 @@
                         <!-- category item -->
                         <li>
                             <!-- Create a link to the category page -->
-                            <a class="dropdown-item" href="#">
+                            <a class="dropdown-item" href="{{ route('categories.show', $category->slug) }}">
                                 {{ $category->name }}
                             </a>
                         </li>
