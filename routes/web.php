@@ -10,6 +10,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', [MovieController::class, 'index'])->name('home');
+Route::get('/movies/{movie:slug}', [MovieController::class, 'show'])->name('movies.show');
 
 Route::post('/logout', function (Request $request) {
     return app(\Laravel\Fortify\Http\Controllers\AuthenticatedSessionController::class)->destroy($request);

@@ -8,8 +8,8 @@
         </button>
 
         <!-- Navbar brand/logo -->
-        <a class="navbar-brand" href="#">
-            <img class="navbar-icon" src="assets/img/codeflix_logo.png" alt="Codeflix Logo">
+        <a class="navbar-brand" href="{{ route('home') }}">
+            <img class="navbar-icon" src="{{ asset('assets/img/codeflix_logo.png') }}" alt="Codeflix Logo">
         </a>
 
         <!-- Collapsible navbar content -->

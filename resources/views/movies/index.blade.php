@@ -47,13 +47,15 @@
                 @foreach ($newAddedMovies as $movie)
                     <div class="swiper-slide">
                         <div class="card">
-                            <!-- Image for Slides -->
-                            <img src="{{ $movie->poster }}" class="img-fluid h-100" alt="Trex Image">
-                            <!-- Rating Badge -->
-                            <span class="badge rounded-pill text-bg-dark badge-rating">
-                                <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
-                                ({{ $movie->average_rating }})
-                            </span>
+                            <a href="{{ route('movies.show', $movie->slug) }}">
+                                <!-- Image for Slides -->
+                                <img src="{{ $movie->poster }}" class="img-fluid h-100" alt="Movie Image">
+                                <!-- Rating Badge -->
+                                <span class="badge rounded-pill text-bg-dark badge-rating">
+                                    <img class="star-rating" src="assets/img/star-rating.png" alt="Star Rating">
+                                    ({{ $movie->average_rating }})
+                                </span>
+                            </a>
                         </div>
                     </div>
                 @endforeach

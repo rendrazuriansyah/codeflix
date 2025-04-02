@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 class MovieController extends Controller implements HasMiddleware
@@ -27,6 +28,17 @@ class MovieController extends Controller implements HasMiddleware
         return view('movies.index',[
             'newAddedMovies' => $newAddedMovies,
             'topRatedMovies' => $topRatedMovies,
+        ]);
+    }
+
+    public function show(Movie $movie) 
+    {
+        $userPlan = Auth::user()->getCurrentPlan();
+        $streamingUrl = $movie->getStreamingUrl($userPlan->resolution);
+
+        return view('movies.show', [
+            'movie' => $movie,
+            'streamingUrl' => $streamingUrl,
         ]);
     }
 }
