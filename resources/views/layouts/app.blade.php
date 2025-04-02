@@ -115,6 +115,8 @@
             },
         });
     </script>
+    <!-- Stack any additional scripts that need to be loaded last -->
+    @stack('scripts')
 </body>
 
 </html>

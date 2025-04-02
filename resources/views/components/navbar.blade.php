@@ -20,7 +20,7 @@
             <!-- Search form -->
             <form class="d-flex me-md-5" role="search" method="GET" action="{{ route('movies.search') }}">
                 <input 
-                    class="form-control search-box" 
+                    class="form-control search-box text-white" 
                     type="search" 
                     name="q" 
                     value="{{ request('q') }}"

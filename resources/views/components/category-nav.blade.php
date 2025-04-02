@@ -22,4 +22,11 @@
             @endforeach
         </div>
     </li>
+    <!-- Movies navigation item -->
+    <li class="nav-item">
+        <!-- Link to the movies index page -->
+        <a class="nav-link text-white" href="{{ route('movies.index') }}">
+            Movies <!-- Movies label -->
+        </a>
+    </li>
 </ul>
