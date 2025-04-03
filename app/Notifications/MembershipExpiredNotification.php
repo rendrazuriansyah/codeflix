@@ -11,12 +11,14 @@ class MembershipExpiredNotification extends Notification
 {
     use Queueable;
 
+    private $membership;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($membership)
     {
-        //
+        $this->membership = $membership;
     }
 
     /**
@@ -35,9 +37,14 @@ class MembershipExpiredNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+            ->subject('[Codeflix] Time to Renew Your Membership!')
+            ->greeting('Hi ' . $this->membership->user->name . ',')
+            ->line('Wow, time flies! Your membership expired on ' . $this->membership->end_date->format('d M Y') . '.')
+            ->line('Don\'t worry, renewing is super easy! Just click the link below:')
+            ->action('Renew Now!', url('/renew'))
+            ->line('Don\'t miss out on the latest episodes and other cool features!')
+            ->line('If you have any questions or need help, the Codeflix team is ready to assist you.')
+            ->salutation('Best regards, The Codeflix Team');
     }
 
     /**
