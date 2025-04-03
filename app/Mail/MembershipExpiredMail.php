@@ -13,12 +13,14 @@ class MembershipExpiredMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public $membership;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($membership)
     {
-        //
+        $this->membership = $membership;
     }
 
     /**
@@ -27,7 +29,7 @@ class MembershipExpiredMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Membership Expired Mail',
+            subject: 'Membership Expired Mail | Codeflix',
         );
     }
 
@@ -38,6 +40,11 @@ class MembershipExpiredMail extends Mailable
     {
         return new Content(
             markdown: 'mail.membership.expired',
+            with: [
+                'expiredDate' => $this->membership->end_date->format('d M Y'),
+                'renewUrl' => url('/renew'),
+                'name' => $this->membership->user->name,
+            ],
         );
     }
 
