@@ -30,3 +30,7 @@ Schedule::command('membership:check')
 
 // untuk local (uji coba)
 // Schedule::command('membership:check')->everyMinute();
+
+// php artisan schedule:list        untuk liat list schedule yang ada
+// php artisan schedule:run         untuk ngepush schedule ke queue tabel jobs
+// php artisan queue:work           untuk menjalankan queue di tabel jobs
