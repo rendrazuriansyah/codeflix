@@ -13,7 +13,7 @@ class TransactionController extends Controller
     /**
      * Initialize Midtrans configuration.
      */
-    public function index()
+    public function __construct()
     {
         Config::$serverKey = config('midtrans.server_key');
         Config::$isProduction = config('midtrans.is_production');
@@ -34,7 +34,7 @@ class TransactionController extends Controller
 
         // Validate the request data
         $request->validate([
-            'plan_id' => 'required|exists:plan_id',
+            'plan_id' => 'required|exists:plans,id',
         ]);
 
         // Generate a unique transaction number
@@ -53,7 +53,7 @@ class TransactionController extends Controller
         $payload = [
             'transaction_details' => [
                 'order_id' => $transaction->transaction_number,
-                'gross_amount' => (int) $transaction->total_amount,
+                'gross_amount' => (int) round($transaction->total_amount, 0, PHP_ROUND_HALF_UP),
             ],
             'customer_details' => [
                 'first_name' => $user->name,
@@ -63,11 +63,11 @@ class TransactionController extends Controller
             'item_details' => [
                 [
                     'id' => $transaction->plan_id,
-                    'price' => (int) $transaction->total_amount,
+                    'price' => (int) round($transaction->total_amount, 0, PHP_ROUND_HALF_UP),
                     'quantity' => 1,
                     'name' => $transaction->plan->title,
-                ]
-            ]
+                ],
+            ],
         ];
 
         try {
@@ -85,7 +85,7 @@ class TransactionController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => $e->getMessage(),
-            ]);
+            ], 500);
         }
     }
 }
