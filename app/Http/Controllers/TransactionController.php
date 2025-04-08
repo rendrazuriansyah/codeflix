@@ -6,6 +6,8 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
@@ -87,5 +89,81 @@ class TransactionController extends Controller
                 'message' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function callback(Request $request)
+    {
+        // Retrieve the Midtrans server key from config
+        $serverKey = config('midtrans.server_key');
+        
+        // Generate the hash signature
+        $hashed = hash('sha512', $request->order_id . $request->status_code . $request->gross_amount . $serverKey);
+
+        // Compare the generated signature with the request signature
+        if ($hashed == $request->signature_key) {
+            // Find the transaction using the order ID
+            $transaction = Transaction::with('user', 'plan')->where('transaction_number', $request->order_id)->first();
+        
+            if ($transaction) {
+                // Default payment status is pending
+                $paymentStatus = 'pending';
+
+                // Check if the transaction status is successful
+                if ($request->transaction_status == 'capture' || $request->transaction_status == 'settlement') {
+                    $paymentStatus = 'success';
+
+                    // Retrieve user and plan related to the transaction
+                    $user = $transaction->user;
+                    $plan = $transaction->plan;
+
+                    try {
+                        // Begin database transaction
+                        DB::beginTransaction();
+
+                        // Create a new membership for the user
+                        $user->memberships()->create([
+                            'plan_id' => $plan->id,
+                            'start_date' => now(),
+                            'end_date' => now()->addDays($plan->duration),
+                            'active' => true,
+                        ]);
+
+                        // Update transaction with successful payment status
+                        $transaction->update([
+                            'payment_status' => $paymentStatus,
+                            'midtrans_transaction_id' => $request->transaction_id,
+                        ]);
+    
+                        // Commit the transaction
+                        DB::commit();
+                    } catch (\Exception $e) {
+                        // Log error and return failure response if an error occurs
+                        Log::error('Failed to process successful payment: ' . $e->getMessage());
+
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => 'Failed to process membership',
+                        ], 500);
+                    }
+                    // Update transaction with failed payment status
+                
+                    $paymentStatus = 'failed';
+                    $transaction->update([
+                        'payment_status' => $paymentStatus,
+                        'midtrans_transaction_id' => $request->transaction_id,
+                    ]);
+                }
+
+                // Return success response
+                return response()->json([
+                    'status' => 'success',
+                ]);
+            }
+        }
+
+        // Return error response if signature verification fails or transaction not found
+        return response()->json([
+            'status' => 'error'
+        ], 404);
     }
 }
