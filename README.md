@@ -1,66 +1,135 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Codeflix - Netflix-like Video Streaming System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Codeflix is a web application project built to simulate a video streaming platform like Netflix. Developed using **Laravel 12**, this project demonstrates the implementation of core features found in modern video-on-demand services, including user management, subscription systems, a movie catalog, and payment integration.
 
-## About Laravel
+## Key Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Here are some of the key features implemented in Codeflix:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **User Authentication:**
+    * New user registration.
+    * Login for registered users.
+    * Forgot Password and Password Reset functionality (using Laravel Fortify).
+* **Subscription Management:**
+    * Subscription plan selection during registration or after login.
+    * Checkout page for subscription payments.
+    * User redirection based on subscription status after login/registration.
+* **Movie Catalog:**
+    * Display list of movies based on categories.
+    * Showcase Latest Movies and Trending Movies.
+    * Detailed view page for each movie.
+    * Movie search functionality by title.
+    * "All Movies" page with a *load more* feature.
+* **Payment Gateway Integration:**
+    * Implemented payments using **Midtrans Snap** for a seamless checkout process.
+    * Webhook/Callback listener to handle payment status notifications from Midtrans.
+* **Membership Status Checks:**
+    * Automated scheduler (using Laravel Scheduler & Jobs) to periodically check user subscription validity.
+    * Custom command to run checks manually if needed.
+    * Automatic email notifications (using Laravel Mail & Notifications) to users whose subscriptions are expiring or have expired.
+* **Database Structure:**
+    * Relational database design to manage users, plans, subscriptions, movies, categories, and ratings.
+    * Uses Laravel Migrations to create the table structure.
+    * Uses Laravel Seeders to populate initial/dummy data.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Technology Stack
 
-## Learning Laravel
+* **Backend:** PHP 8.2+, Laravel 12
+* **Database:** MySQL / PostgreSQL (adjust according to your setup)
+* **Authentication:** Laravel Fortify
+* **Payment Gateway:** Midtrans (Snap API)
+* **Dependency Manager:** Composer
+* **Task Scheduling:** Laravel Scheduler
+* **Queue & Jobs:** Laravel Queues (for background tasks like notifications)
+* **Email:** Laravel Mail & Notifications
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation & Setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+To run this project in your local environment, follow these steps:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1.  **Clone the Repository:**
+    ```bash
+    git clone https://github.com/rendrazuriansyah/codeflix.git
+    cd codeflix
+    ```
 
-## Laravel Sponsors
+2.  **Install Dependencies:**
+    ```bash
+    composer install
+    npm install # or yarn install (if using asset bundling)
+    npm run dev # or yarn dev (if using asset bundling)
+    ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3.  **Configure Environment:**
+    * Copy the `.env.example` file to `.env`:
+        ```bash
+        cp .env.example .env
+        ```
+    * Open the `.env` file and adjust the following configurations:
+        * `DB_CONNECTION`, `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` (match your local database setup).
+        * `MIDTRANS_CLIENT_KEY`, `MIDTRANS_SERVER_KEY`, `MIDTRANS_MERCHANT_ID` (obtain from your Midtrans Sandbox/Production account).
+        * `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_ENCRYPTION`, `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME` (configure for sending email notifications).
 
-### Premium Partners
+4.  **Generate Application Key:**
+    ```bash
+    php artisan key:generate
+    ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+5.  **Run Migrations & Seeders:**
+    * Create the database table structure:
+        ```bash
+        php artisan migrate
+        ```
+    * (Optional) Populate the database with initial/dummy data:
+        ```bash
+        php artisan db:seed
+        ```
 
-## Contributing
+6.  **Setup Scheduler:**
+    * To enable automatic membership checks, ensure you run the Laravel Scheduler. This typically involves adding a single cron entry to your server:
+        ```cron
+        * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+        ```
+    * For local development, you might run a queue worker (if jobs are dispatched to the queue) or manually run the scheduler command as needed.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+7.  **Run the Application:**
+    ```bash
+    php artisan serve
+    ```
+    The application will typically be available at `http://localhost:8000`.
 
-## Code of Conduct
+## Usage
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+1.  Open the application in your browser (`http://localhost:8000`).
+2.  **Register** a new account or **Login** if you already have one.
+3.  Select a **subscription plan** when prompted.
+4.  Complete the **checkout** process (you will be redirected to Midtrans Snap).
+5.  Once subscribed, browse the available **movie catalog**.
+6.  Use the **search feature** to find specific movies.
 
-## Security Vulnerabilities
+## Screenshots
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+* *Login Page*
+    ![Login Page](screenshots/login-page.png)
+* *Registration Page*
+    ![Registration Page](screenshots/registration-page.png)
+* *Homepage*
+    ![Homepage](screenshots/homepage.png)
+* *Movie Detail Page*
+    ![Movie Detail Page](screenshots/movie-detail-page.png)
+* *Search Results Page*
+    ![Search Results Page](screenshots/search-results-page.png)
+* *Subscription Plans Page*
+    ![Subscription Plans Page](screenshots/subscription-plans-page.png)
+* *Payment Checkout Page*
+    ![Payment Checkout Page](screenshots/payment-checkout-page.png)
+* *Email Notification (Subscription Expired)*
+    ![Email Notification Subscription Expired](screenshots/email-expired-subscription.png)
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License. See the [`LICENSE`](LICENSE) file for details.
+
+---
+
+_Built by Rendra ([https://github.com/rendrazuriansyah](https://github.com/rendrazuriansyah))_
